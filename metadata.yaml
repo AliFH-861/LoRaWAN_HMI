@@ -1,0 +1,277 @@
+mqtt:
+  broker: "localhost"
+  port: 1883
+  keepalive: 60
+  tls:
+    enabled: false
+    ca_cert: "certs/ca.pem"
+    client_cert: "certs/client.crt"
+    client_key: "certs/client.key"
+    tls_version: "TLSv1.2"
+    cert_reqs: "CERT_REQUIRED"
+
+plants:
+
+  # ── Zone North ───────────────────────────────────────────────────────────
+  - id: zone_north
+    name: "Zone North"
+    domain: lorawan
+
+    assets:
+
+      - id: transformer_t1
+        name: "Transformer T1"
+        description: "North Feeder Alpha — 400 kVA"
+        type: transformer_oil_monitor
+        map_position: {x: 20, y: 22}
+        lorawan:
+          dev_eui: "A8-40-41-00-00-00-00-01"
+          app_id:  "transformer-monitor"
+          join_status_topic: "lorawan/fleet/north/t1/join_status"
+        heartbeat_topic: "lorawan/fleet/north/t1/heartbeat"
+        heartbeat_timeout_s: 120
+        tags:
+          - id: oil_level_pct
+            name: "Oil Level"
+            type: gauge
+            mqtt_topic: "lorawan/fleet/north/t1/oil_level_pct"
+            unit: "%"
+            normal_min: 60
+            normal_max: 100
+            warning_min: 25
+            warning_max: 60
+            critical_min: 0
+            critical_max: 25
+            display_min: 0
+            display_max: 100
+
+          - id: oil_distance_cm
+            name: "Oil Distance"
+            type: gauge
+            mqtt_topic: "lorawan/fleet/north/t1/oil_distance_cm"
+            unit: "cm"
+            normal_min: 0
+            normal_max: 20
+            warning_min: 20
+            warning_max: 35
+            critical_min: 35
+            critical_max: 50
+            display_min: 0
+            display_max: 50
+
+          - id: battery_pct
+            name: "Battery"
+            type: gauge
+            mqtt_topic: "lorawan/fleet/north/t1/battery_pct"
+            unit: "%"
+            normal_min: 40
+            normal_max: 100
+            warning_min: 20
+            warning_max: 40
+            critical_min: 0
+            critical_max: 20
+            display_min: 0
+            display_max: 100
+
+          - id: battery_voltage
+            name: "Battery Voltage"
+            type: gauge
+            mqtt_topic: "lorawan/fleet/north/t1/battery_voltage"
+            unit: "V"
+            normal_min: 3.4
+            normal_max: 4.2
+            warning_min: 3.2
+            warning_max: 3.4
+            critical_min: 0.0
+            critical_max: 3.2
+            display_min: 2.5
+            display_max: 4.5
+
+          - id: rssi
+            name: "RSSI"
+            type: gauge
+            mqtt_topic: "lorawan/fleet/north/t1/rssi"
+            unit: "dBm"
+            normal_min: -100
+            normal_max: -60
+            warning_min: -115
+            warning_max: -100
+            critical_min: -130
+            critical_max: -115
+            display_min: -130
+            display_max: -60
+
+          - id: snr
+            name: "SNR"
+            type: gauge
+            mqtt_topic: "lorawan/fleet/north/t1/snr"
+            unit: "dB"
+            normal_min: 5
+            normal_max: 30
+            warning_min: 0
+            warning_max: 5
+            critical_min: -20
+            critical_max: 0
+            display_min: -20
+            display_max: 30
+
+          - id: tamper_status
+            name: "Tamper Alarm"
+            type: alarm
+            mqtt_topic: "lorawan/fleet/north/t1/tamper_status"
+            alarm_value: "1"
+            alarm_label: "TAMPER DETECTED"
+            normal_label: "Secure"
+            cmd_topic: "lorawan/fleet/north/t1/cmd/tamper_reset"
+
+          - id: lid_position
+            name: "Lid Position"
+            type: alarm
+            mqtt_topic: "lorawan/fleet/north/t1/lid_position"
+            alarm_value: "open"
+            alarm_label: "LID OPEN"
+            normal_label: "Closed"
+            cmd_topic: "lorawan/fleet/north/t1/cmd/lid_ack"
+
+          - id: reed1
+            name: "Reed Switch 1"
+            type: status
+            mqtt_topic: "lorawan/fleet/north/t1/reed1"
+            normal_values: ["0", "closed"]
+            warning_values: ["1", "open"]
+
+          - id: reed2
+            name: "Reed Switch 2"
+            type: status
+            mqtt_topic: "lorawan/fleet/north/t1/reed2"
+            normal_values: ["0", "closed"]
+            warning_values: ["1", "open"]
+
+      - id: transformer_t2
+        name: "Transformer T2"
+        description: "North Feeder Beta — 250 kVA"
+        type: transformer_oil_monitor
+        map_position: {x: 35, y: 20}
+        lorawan:
+          dev_eui: "A8-40-41-00-00-00-00-02"
+          app_id:  "transformer-monitor"
+          join_status_topic: "lorawan/fleet/north/t2/join_status"
+        heartbeat_topic: "lorawan/fleet/north/t2/heartbeat"
+        heartbeat_timeout_s: 120
+        tags:
+          - {id: oil_level_pct,   name: "Oil Level",       type: gauge, mqtt_topic: "lorawan/fleet/north/t2/oil_level_pct",   unit: "%",   normal_min: 60,   normal_max: 100,  warning_min: 25,  warning_max: 60,  critical_min: 0,    critical_max: 25,  display_min: 0,    display_max: 100}
+          - {id: oil_distance_cm, name: "Oil Distance",     type: gauge, mqtt_topic: "lorawan/fleet/north/t2/oil_distance_cm", unit: "cm",  normal_min: 0,    normal_max: 20,   warning_min: 20,  warning_max: 35,  critical_min: 35,   critical_max: 50,  display_min: 0,    display_max: 50}
+          - {id: battery_pct,     name: "Battery",          type: gauge, mqtt_topic: "lorawan/fleet/north/t2/battery_pct",     unit: "%",   normal_min: 40,   normal_max: 100,  warning_min: 20,  warning_max: 40,  critical_min: 0,    critical_max: 20,  display_min: 0,    display_max: 100}
+          - {id: battery_voltage, name: "Battery Voltage",  type: gauge, mqtt_topic: "lorawan/fleet/north/t2/battery_voltage", unit: "V",   normal_min: 3.4,  normal_max: 4.2,  warning_min: 3.2, warning_max: 3.4, critical_min: 0.0,  critical_max: 3.2, display_min: 2.5,  display_max: 4.5}
+          - {id: rssi,            name: "RSSI",             type: gauge, mqtt_topic: "lorawan/fleet/north/t2/rssi",            unit: "dBm", normal_min: -100, normal_max: -60,  warning_min: -115,warning_max: -100,critical_min: -130, critical_max: -115,display_min: -130, display_max: -60}
+          - {id: snr,             name: "SNR",              type: gauge, mqtt_topic: "lorawan/fleet/north/t2/snr",             unit: "dB",  normal_min: 5,    normal_max: 30,   warning_min: 0,   warning_max: 5,   critical_min: -20,  critical_max: 0,   display_min: -20,  display_max: 30}
+          - {id: tamper_status,   name: "Tamper Alarm",     type: alarm, mqtt_topic: "lorawan/fleet/north/t2/tamper_status",   alarm_value: "1",    alarm_label: "TAMPER DETECTED", normal_label: "Secure", cmd_topic: "lorawan/fleet/north/t2/cmd/tamper_reset"}
+          - {id: lid_position,    name: "Lid Position",     type: alarm, mqtt_topic: "lorawan/fleet/north/t2/lid_position",    alarm_value: "open", alarm_label: "LID OPEN",       normal_label: "Closed", cmd_topic: "lorawan/fleet/north/t2/cmd/lid_ack"}
+          - {id: reed1,           name: "Reed Switch 1",    type: status,mqtt_topic: "lorawan/fleet/north/t2/reed1",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+          - {id: reed2,           name: "Reed Switch 2",    type: status,mqtt_topic: "lorawan/fleet/north/t2/reed2",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+
+  # ── Zone South ───────────────────────────────────────────────────────────
+  - id: zone_south
+    name: "Zone South"
+    domain: lorawan
+
+    assets:
+
+      - id: transformer_t3
+        name: "Transformer T3"
+        description: "South Industrial Feed — 630 kVA"
+        type: transformer_oil_monitor
+        map_position: {x: 18, y: 72}
+        lorawan:
+          dev_eui: "A8-40-41-00-00-00-00-03"
+          app_id:  "transformer-monitor"
+          join_status_topic: "lorawan/fleet/south/t3/join_status"
+        heartbeat_topic: "lorawan/fleet/south/t3/heartbeat"
+        heartbeat_timeout_s: 120
+        tags:
+          - {id: oil_level_pct,   name: "Oil Level",       type: gauge, mqtt_topic: "lorawan/fleet/south/t3/oil_level_pct",   unit: "%",   normal_min: 60,   normal_max: 100,  warning_min: 25,  warning_max: 60,  critical_min: 0,    critical_max: 25,  display_min: 0,    display_max: 100}
+          - {id: oil_distance_cm, name: "Oil Distance",     type: gauge, mqtt_topic: "lorawan/fleet/south/t3/oil_distance_cm", unit: "cm",  normal_min: 0,    normal_max: 20,   warning_min: 20,  warning_max: 35,  critical_min: 35,   critical_max: 50,  display_min: 0,    display_max: 50}
+          - {id: battery_pct,     name: "Battery",          type: gauge, mqtt_topic: "lorawan/fleet/south/t3/battery_pct",     unit: "%",   normal_min: 40,   normal_max: 100,  warning_min: 20,  warning_max: 40,  critical_min: 0,    critical_max: 20,  display_min: 0,    display_max: 100}
+          - {id: battery_voltage, name: "Battery Voltage",  type: gauge, mqtt_topic: "lorawan/fleet/south/t3/battery_voltage", unit: "V",   normal_min: 3.4,  normal_max: 4.2,  warning_min: 3.2, warning_max: 3.4, critical_min: 0.0,  critical_max: 3.2, display_min: 2.5,  display_max: 4.5}
+          - {id: rssi,            name: "RSSI",             type: gauge, mqtt_topic: "lorawan/fleet/south/t3/rssi",            unit: "dBm", normal_min: -100, normal_max: -60,  warning_min: -115,warning_max: -100,critical_min: -130, critical_max: -115,display_min: -130, display_max: -60}
+          - {id: snr,             name: "SNR",              type: gauge, mqtt_topic: "lorawan/fleet/south/t3/snr",             unit: "dB",  normal_min: 5,    normal_max: 30,   warning_min: 0,   warning_max: 5,   critical_min: -20,  critical_max: 0,   display_min: -20,  display_max: 30}
+          - {id: tamper_status,   name: "Tamper Alarm",     type: alarm, mqtt_topic: "lorawan/fleet/south/t3/tamper_status",   alarm_value: "1",    alarm_label: "TAMPER DETECTED", normal_label: "Secure", cmd_topic: "lorawan/fleet/south/t3/cmd/tamper_reset"}
+          - {id: lid_position,    name: "Lid Position",     type: alarm, mqtt_topic: "lorawan/fleet/south/t3/lid_position",    alarm_value: "open", alarm_label: "LID OPEN",       normal_label: "Closed", cmd_topic: "lorawan/fleet/south/t3/cmd/lid_ack"}
+          - {id: reed1,           name: "Reed Switch 1",    type: status,mqtt_topic: "lorawan/fleet/south/t3/reed1",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+          - {id: reed2,           name: "Reed Switch 2",    type: status,mqtt_topic: "lorawan/fleet/south/t3/reed2",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+
+      - id: transformer_t4
+        name: "Transformer T4"
+        description: "South Residential — 160 kVA"
+        type: transformer_oil_monitor
+        map_position: {x: 38, y: 76}
+        lorawan:
+          dev_eui: "A8-40-41-00-00-00-00-04"
+          app_id:  "transformer-monitor"
+          join_status_topic: "lorawan/fleet/south/t4/join_status"
+        heartbeat_topic: "lorawan/fleet/south/t4/heartbeat"
+        heartbeat_timeout_s: 120
+        tags:
+          - {id: oil_level_pct,   name: "Oil Level",       type: gauge, mqtt_topic: "lorawan/fleet/south/t4/oil_level_pct",   unit: "%",   normal_min: 60,   normal_max: 100,  warning_min: 25,  warning_max: 60,  critical_min: 0,    critical_max: 25,  display_min: 0,    display_max: 100}
+          - {id: oil_distance_cm, name: "Oil Distance",     type: gauge, mqtt_topic: "lorawan/fleet/south/t4/oil_distance_cm", unit: "cm",  normal_min: 0,    normal_max: 20,   warning_min: 20,  warning_max: 35,  critical_min: 35,   critical_max: 50,  display_min: 0,    display_max: 50}
+          - {id: battery_pct,     name: "Battery",          type: gauge, mqtt_topic: "lorawan/fleet/south/t4/battery_pct",     unit: "%",   normal_min: 40,   normal_max: 100,  warning_min: 20,  warning_max: 40,  critical_min: 0,    critical_max: 20,  display_min: 0,    display_max: 100}
+          - {id: battery_voltage, name: "Battery Voltage",  type: gauge, mqtt_topic: "lorawan/fleet/south/t4/battery_voltage", unit: "V",   normal_min: 3.4,  normal_max: 4.2,  warning_min: 3.2, warning_max: 3.4, critical_min: 0.0,  critical_max: 3.2, display_min: 2.5,  display_max: 4.5}
+          - {id: rssi,            name: "RSSI",             type: gauge, mqtt_topic: "lorawan/fleet/south/t4/rssi",            unit: "dBm", normal_min: -100, normal_max: -60,  warning_min: -115,warning_max: -100,critical_min: -130, critical_max: -115,display_min: -130, display_max: -60}
+          - {id: snr,             name: "SNR",              type: gauge, mqtt_topic: "lorawan/fleet/south/t4/snr",             unit: "dB",  normal_min: 5,    normal_max: 30,   warning_min: 0,   warning_max: 5,   critical_min: -20,  critical_max: 0,   display_min: -20,  display_max: 30}
+          - {id: tamper_status,   name: "Tamper Alarm",     type: alarm, mqtt_topic: "lorawan/fleet/south/t4/tamper_status",   alarm_value: "1",    alarm_label: "TAMPER DETECTED", normal_label: "Secure", cmd_topic: "lorawan/fleet/south/t4/cmd/tamper_reset"}
+          - {id: lid_position,    name: "Lid Position",     type: alarm, mqtt_topic: "lorawan/fleet/south/t4/lid_position",    alarm_value: "open", alarm_label: "LID OPEN",       normal_label: "Closed", cmd_topic: "lorawan/fleet/south/t4/cmd/lid_ack"}
+          - {id: reed1,           name: "Reed Switch 1",    type: status,mqtt_topic: "lorawan/fleet/south/t4/reed1",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+          - {id: reed2,           name: "Reed Switch 2",    type: status,mqtt_topic: "lorawan/fleet/south/t4/reed2",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+
+  # ── Zone East ────────────────────────────────────────────────────────────
+  - id: zone_east
+    name: "Zone East"
+    domain: lorawan
+
+    assets:
+
+      - id: transformer_t5
+        name: "Transformer T5"
+        description: "East Grid Primary — 500 kVA"
+        type: transformer_oil_monitor
+        map_position: {x: 68, y: 35}
+        lorawan:
+          dev_eui: "A8-40-41-00-00-00-00-05"
+          app_id:  "transformer-monitor"
+          join_status_topic: "lorawan/fleet/east/t5/join_status"
+        heartbeat_topic: "lorawan/fleet/east/t5/heartbeat"
+        heartbeat_timeout_s: 120
+        tags:
+          - {id: oil_level_pct,   name: "Oil Level",       type: gauge, mqtt_topic: "lorawan/fleet/east/t5/oil_level_pct",   unit: "%",   normal_min: 60,   normal_max: 100,  warning_min: 25,  warning_max: 60,  critical_min: 0,    critical_max: 25,  display_min: 0,    display_max: 100}
+          - {id: oil_distance_cm, name: "Oil Distance",     type: gauge, mqtt_topic: "lorawan/fleet/east/t5/oil_distance_cm", unit: "cm",  normal_min: 0,    normal_max: 20,   warning_min: 20,  warning_max: 35,  critical_min: 35,   critical_max: 50,  display_min: 0,    display_max: 50}
+          - {id: battery_pct,     name: "Battery",          type: gauge, mqtt_topic: "lorawan/fleet/east/t5/battery_pct",     unit: "%",   normal_min: 40,   normal_max: 100,  warning_min: 20,  warning_max: 40,  critical_min: 0,    critical_max: 20,  display_min: 0,    display_max: 100}
+          - {id: battery_voltage, name: "Battery Voltage",  type: gauge, mqtt_topic: "lorawan/fleet/east/t5/battery_voltage", unit: "V",   normal_min: 3.4,  normal_max: 4.2,  warning_min: 3.2, warning_max: 3.4, critical_min: 0.0,  critical_max: 3.2, display_min: 2.5,  display_max: 4.5}
+          - {id: rssi,            name: "RSSI",             type: gauge, mqtt_topic: "lorawan/fleet/east/t5/rssi",            unit: "dBm", normal_min: -100, normal_max: -60,  warning_min: -115,warning_max: -100,critical_min: -130, critical_max: -115,display_min: -130, display_max: -60}
+          - {id: snr,             name: "SNR",              type: gauge, mqtt_topic: "lorawan/fleet/east/t5/snr",             unit: "dB",  normal_min: 5,    normal_max: 30,   warning_min: 0,   warning_max: 5,   critical_min: -20,  critical_max: 0,   display_min: -20,  display_max: 30}
+          - {id: tamper_status,   name: "Tamper Alarm",     type: alarm, mqtt_topic: "lorawan/fleet/east/t5/tamper_status",   alarm_value: "1",    alarm_label: "TAMPER DETECTED", normal_label: "Secure", cmd_topic: "lorawan/fleet/east/t5/cmd/tamper_reset"}
+          - {id: lid_position,    name: "Lid Position",     type: alarm, mqtt_topic: "lorawan/fleet/east/t5/lid_position",    alarm_value: "open", alarm_label: "LID OPEN",       normal_label: "Closed", cmd_topic: "lorawan/fleet/east/t5/cmd/lid_ack"}
+          - {id: reed1,           name: "Reed Switch 1",    type: status,mqtt_topic: "lorawan/fleet/east/t5/reed1",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+          - {id: reed2,           name: "Reed Switch 2",    type: status,mqtt_topic: "lorawan/fleet/east/t5/reed2",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+
+      - id: transformer_t6
+        name: "Transformer T6"
+        description: "East Grid Secondary — 315 kVA"
+        type: transformer_oil_monitor
+        map_position: {x: 74, y: 65}
+        lorawan:
+          dev_eui: "A8-40-41-00-00-00-00-06"
+          app_id:  "transformer-monitor"
+          join_status_topic: "lorawan/fleet/east/t6/join_status"
+        heartbeat_topic: "lorawan/fleet/east/t6/heartbeat"
+        heartbeat_timeout_s: 120
+        tags:
+          - {id: oil_level_pct,   name: "Oil Level",       type: gauge, mqtt_topic: "lorawan/fleet/east/t6/oil_level_pct",   unit: "%",   normal_min: 60,   normal_max: 100,  warning_min: 25,  warning_max: 60,  critical_min: 0,    critical_max: 25,  display_min: 0,    display_max: 100}
+          - {id: oil_distance_cm, name: "Oil Distance",     type: gauge, mqtt_topic: "lorawan/fleet/east/t6/oil_distance_cm", unit: "cm",  normal_min: 0,    normal_max: 20,   warning_min: 20,  warning_max: 35,  critical_min: 35,   critical_max: 50,  display_min: 0,    display_max: 50}
+          - {id: battery_pct,     name: "Battery",          type: gauge, mqtt_topic: "lorawan/fleet/east/t6/battery_pct",     unit: "%",   normal_min: 40,   normal_max: 100,  warning_min: 20,  warning_max: 40,  critical_min: 0,    critical_max: 20,  display_min: 0,    display_max: 100}
+          - {id: battery_voltage, name: "Battery Voltage",  type: gauge, mqtt_topic: "lorawan/fleet/east/t6/battery_voltage", unit: "V",   normal_min: 3.4,  normal_max: 4.2,  warning_min: 3.2, warning_max: 3.4, critical_min: 0.0,  critical_max: 3.2, display_min: 2.5,  display_max: 4.5}
+          - {id: rssi,            name: "RSSI",             type: gauge, mqtt_topic: "lorawan/fleet/east/t6/rssi",            unit: "dBm", normal_min: -100, normal_max: -60,  warning_min: -115,warning_max: -100,critical_min: -130, critical_max: -115,display_min: -130, display_max: -60}
+          - {id: snr,             name: "SNR",              type: gauge, mqtt_topic: "lorawan/fleet/east/t6/snr",             unit: "dB",  normal_min: 5,    normal_max: 30,   warning_min: 0,   warning_max: 5,   critical_min: -20,  critical_max: 0,   display_min: -20,  display_max: 30}
+          - {id: tamper_status,   name: "Tamper Alarm",     type: alarm, mqtt_topic: "lorawan/fleet/east/t6/tamper_status",   alarm_value: "1",    alarm_label: "TAMPER DETECTED", normal_label: "Secure", cmd_topic: "lorawan/fleet/east/t6/cmd/tamper_reset"}
+          - {id: lid_position,    name: "Lid Position",     type: alarm, mqtt_topic: "lorawan/fleet/east/t6/lid_position",    alarm_value: "open", alarm_label: "LID OPEN",       normal_label: "Closed", cmd_topic: "lorawan/fleet/east/t6/cmd/lid_ack"}
+          - {id: reed1,           name: "Reed Switch 1",    type: status,mqtt_topic: "lorawan/fleet/east/t6/reed1",           normal_values: ["0","closed"], warning_values: ["1","open"]}
+          - {id: reed2,           name: "Reed Switch 2",    type: status,mqtt_topic: "lorawan/fleet/east/t6/reed2",           normal_values: ["0","closed"], warning_values: ["1","open"]}
